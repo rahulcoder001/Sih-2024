@@ -3,14 +3,62 @@ import React, { useRef, useState } from 'react';
 
 const Page = () => {
   const [fileName, setFileName] = useState('');
-  const fileInputRef = useRef(null);
+  const [file, setFile] = useState(null);
+  const [type , setType] = useState('');
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
+  const handleProfileChange = (e:any) => {
+    const file = e.target.files[0];
     if (file) {
-      setFileName(file.name); // Update state with the selected file's name
+        setFile(file);  
     }
-  };
+};
+
+async function handlesubmit() {
+  
+  
+  const formData = new FormData();
+  //@ts-ignore
+  formData.append('uploadfile', file);
+  formData.append('Documenttype', type);
+  formData.append('password', password);
+  if (profile) {
+      formData.append('avatar', profile);
+  }
+
+  try {
+      const response = await axios.post("/api/adduser", formData, {
+          headers: {
+              'Content-Type': 'multipart/form-data',
+          },
+      });
+
+      if (response.data.ok) {
+          toast.success(response.data.message);
+          const res = await signIn("credentials", {
+              redirect: false,
+              email: email,
+              password: password,
+          });
+
+          if (res?.ok) {
+              setLoading(false);
+              router.push('/');
+              toast.success("Autenticated sucssefully")
+          } else {
+              setLoading(false);
+              toast.error("authentication failed");
+          }
+          
+      } else {
+          setLoading(false);
+          toast.error(response.data.message);
+      }
+  } catch (error) {
+      setLoading(false);
+      toast.error("Error signing up");
+  }
+  setLoading(false);
+}
 
   return (
     <section>
@@ -71,6 +119,12 @@ const Page = () => {
           {fileName && (
             <p className='text-white mt-2'>Selected file: {fileName}</p>
           )}
+          <div className='w-full flex justify-center'>
+          <button className='ml-20   border-2 border-white p-3 font-bold rounded-lg text-sm hover:bg-slate-600'>Submit</button>
+          <button className='ml-2  border-2 border-white p-3 font-bold rounded-lg text-sm hover:bg-slate-600'>Cancel</button>
+          </div>
+
+          
         </form>
       </div>
     </section>
