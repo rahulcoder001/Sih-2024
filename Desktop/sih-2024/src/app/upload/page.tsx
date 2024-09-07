@@ -63,7 +63,7 @@ async function handlesubmit() {
   return (
     <section>
       <div>
-        <h1 className="text-center text-5xl text-white mb-4">Document Upload</h1>
+        <h1 className="text-center text-4xl text-white mb-4">Document Upload</h1>
         <form className='flex flex-col gap-5'>
           <select 
             id="cars" 
