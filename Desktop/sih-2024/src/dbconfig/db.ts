@@ -6,7 +6,7 @@ const dbconnect = async () => {
         return;
     }
 
-    return mongoose.connect(process.env.MONGODB_URI!, {
+    return mongoose.connect("mongodb+srv://rahulbhaihero9:oi0QG0k5RFG1Cqo1@cluster0.iglgh.mongodb.net/verify?retryWrites=true&w=majority&appName=Cluster0", {
         //@ts-ignore
         useNewUrlParser: true,
         useUnifiedTopology: true,
